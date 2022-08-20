@@ -19,7 +19,7 @@ urlpatterns = [
     path('products/<str:pk>/update', ProductsViewSet.as_view({
         'put': 'update',
     })),
-    path('products/<str:pk>', ProductsViewSet.as_view({
+    path('product/<str:pk>/retrieve', ProductsViewSet.as_view({
         'get': 'retrieve',
     })),
     path('products/<str:pk>/delete', ProductsViewSet.as_view({

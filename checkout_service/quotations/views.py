@@ -89,10 +89,13 @@ class QuotationsViewSet(viewsets.GenericViewSet):
             for item in quotation_items:
                 # if request.data.get('branch_id'):
                 
+                # get product data
+                try:
+                    product_data = requests.get(f"http://localhost:8000/api/v1/products/service/product/{item['product_id']}/retrieve").json()
+                except Exception as e:
+                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-                product = ProductsSerializer(Products.objects.get(id=item['product_id']))
-
-                item["product_details"] = product.data
+                item["product_details"] = product_data
                 quotation_items_list.append(item)
                 
             return Response({"quotation": quot_data, "quotation_items": quotation_items_list,

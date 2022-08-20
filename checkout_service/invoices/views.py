@@ -14,15 +14,10 @@ from django.db import transaction
 from pathlib import Path
 # Create your views here.
 
-# ROOT_DIR = Path('__file__').resolve().parent
 
 import logging
 logger = logging.getLogger(__name__)
 
-# logger.basicConfig(filename=str(ROOT_DIR)+'/logs/amata.log',
-#                     filemode='a',
-#                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-#                     level=logger.DEBUG)
 
 class InvoicesViewSet(viewsets.GenericViewSet):
 
