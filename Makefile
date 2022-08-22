@@ -7,6 +7,5 @@ run-checkout-service:
 run-backend:
 	make run-product-service & make run-checkout-service
 
-
 install:
 	pip install -r requirements.txt

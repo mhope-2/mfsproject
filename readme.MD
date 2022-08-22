@@ -15,7 +15,7 @@ Activate the virtualenv for your project
 
     $ source env/bin/activate
     
-Install project requirements:
+Install project requirements using make:
 
     $ make install
     
