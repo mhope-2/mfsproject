@@ -11,15 +11,8 @@ router.register("users", UserViewSet, basename="User")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path(
-        "users",
-        UserViewSet.as_view(
-            {
-                "get": "list",
-            }
-        ),
-        name="users",
-    ),
+    path("users", UserViewSet.as_view({"get": "list",}), name="users"),
+
     path(
         "users/create",
         UserViewSet.as_view(
@@ -30,6 +23,7 @@ urlpatterns = [
         name="create-user",
     ),
     path("users/<str:pk>", UserViewSet.as_view({"put": "update"}), name="update-user"),
+
     path(
         "user/<str:pk>/retrieve",
         UserViewSet.as_view({"get": "retrieve"}),

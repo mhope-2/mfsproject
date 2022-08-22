@@ -121,9 +121,7 @@ class ProductTests(APITestCase):
         """
         self.test_create_and_retrieve_product()
 
-        response = self.client.delete(
-            reverse("delete-product", args=[1]), secure=True, format="json"
-        )
+        response = self.client.delete(reverse("delete-product", args=[1]), secure=True, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Products.objects.count(), 0)
 

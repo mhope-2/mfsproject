@@ -63,6 +63,7 @@ class UserTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(User.objects.count(), 0)
 
+
     def test_retrieve_user(self):
         """
         Ensure we can create a new User and retrieve the data.
@@ -87,6 +88,7 @@ class UserTests(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+
     def test_update_user(self):
         """
         Ensure we can update a User.
@@ -94,10 +96,7 @@ class UserTests(APITestCase):
         self.test_create_and_retrieve_user()
 
         response = self.client.put(
-            reverse("update-user", args=[1]),
-            self.valid_payload,
-            secure=True,
-            format="json",
+            reverse("update-user", args=[1]), self.valid_payload, secure=True, format="json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(User.objects.count(), 1)

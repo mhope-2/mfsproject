@@ -1,10 +1,20 @@
+import logging
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db import transaction
 from .models import Products
 from .serializers import ProductsSerializer
-import logging
 
+from pathlib import Path
+
+ROOT_DIR = Path('__file__').resolve().parent
+try:
+    logging.basicConfig(filename=f'{ROOT_DIR}/logs/product_service.log',
+                        filemode='a',
+                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                        level=logging.DEBUG)
+except FileNotFoundError:
+    pass
 logger = logging.getLogger(__name__)
 
 

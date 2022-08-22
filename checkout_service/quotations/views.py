@@ -1,33 +1,24 @@
 import requests
+import logging
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-
 from .models import QuotationItems, Quotations
-# from product_service.user.models import User
-# from product_service.user.serializers import UserSerializer
-# from product_service.products.models import Products
-
-from product_service.products.serializers import ProductsSerializer
-
 from .serializers import QuotationItemsSerializer, QuotationSerializer
-from pathlib import Path 
-
-# Create your views here.
-
 from django.db import transaction
 
+from pathlib import Path
 
 ROOT_DIR = Path('__file__').resolve().parent
+try:
+    logging.basicConfig(filename=f'{ROOT_DIR}/logs/checkout_service.log',
+                        filemode='a',
+                        format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                        level=logging.DEBUG)
+except FileNotFoundError:
+    pass
+logger = logging.getLogger(__name__)                   
 
-import logging
-logger = logging.getLogger(__name__)
-
-logger.basicConfig(filename=str(ROOT_DIR)+'/logs/product_service.log',
-                    filemode='a',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                    level=logger.DEBUG)
-
-
+# Create your views here.
 class QuotationsViewSet(viewsets.GenericViewSet):
 
     def list(self, request): 
@@ -44,14 +35,11 @@ class QuotationsViewSet(viewsets.GenericViewSet):
             quotation = request.data["quotation"]
             quotation_items = request.data["quotation_items"]
 
-            # user_data = User.objects.get(id=quotation["user_id"])
-            # user_data_serializer = UserSerializer(user_data)
-
             # make request to product service to get user's data
             try:
-                user_data = requests.get(f"http://localhost:8000/api/v1/products/service/user/{quotation['user_id']}/retrieve").json()
+                user_data = requests.get(f"http://localhost:8000/api/v1/product/service/user/{quotation['user_id']}/retrieve").json()
             except Exception as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
             quotation["issued_by"] = str(user_data["first_name"]) + " " + str(user_data["last_name"])
 
@@ -69,7 +57,7 @@ class QuotationsViewSet(viewsets.GenericViewSet):
                 quotation_item_serializer.is_valid(raise_exception=True)
                 quotation_item_serializer.save()
 
-                return Response({"quotation": quotation, "quotation_items": quotation_items}, status=status.HTTP_201_CREATED)
+            return Response({"quotation": quotation, "quotation_items": quotation_items}, status=status.HTTP_201_CREATED)
         except Exception as e:
             logger.error("Error: {}".format(str(e)))
             return Response({"error: ":str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -81,19 +69,16 @@ class QuotationsViewSet(viewsets.GenericViewSet):
             quot_data = QuotationSerializer(Quotations.objects.get(id=pk)).data
 
             # get inv creator
-            # user_data = UserSerializer( User.objects.get(id=quot_data['user_id']) ).data 
-
             quotation_items_list = []
 
             quotation_items = QuotationItemsSerializer(QuotationItems.objects.filter(quotation_no=quot_data['quotation_no']), many=True).data
             for item in quotation_items:
-                # if request.data.get('branch_id'):
-                
-                # get product data
+
+                # get product data via API call
                 try:
-                    product_data = requests.get(f"http://localhost:8000/api/v1/products/service/product/{item['product_id']}/retrieve").json()
+                    product_data = requests.get(f"http://localhost:8000/api/v1/product/service/product/{item['product_id']}/retrieve").json()
                 except Exception as e:
-                    return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
 
                 item["product_details"] = product_data
                 quotation_items_list.append(item)
@@ -102,41 +87,40 @@ class QuotationsViewSet(viewsets.GenericViewSet):
             "message": "Quotation sucessfully retrieved"}, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(str(e))
-            return Response({"response":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"response":str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
     @transaction.atomic
     def update(self, request, pk=None): 
         try:
-            # quotation
-            with transaction.atomic():
-                quotation = Quotations.objects.get(id=pk)
-                quotation_items = QuotationItems.objects.filter(quotation_no=quotation.quotation_no)
+            # updating quotation
+            quotation = Quotations.objects.get(id=pk)
+            quotation_items = QuotationItems.objects.filter(quotation_no=quotation.quotation_no)
 
-                quotation_serializer = QuotationSerializer(instance=quotation, data=request.data["quotation"])
-                quotation_serializer.is_valid(raise_exception=True)
-                quotation_serializer.save()
+            quotation_serializer = QuotationSerializer(instance=quotation, data=request.data["quotation"])
+            quotation_serializer.is_valid(raise_exception=True)
+            quotation_serializer.save()
 
-                # # quotation items
-                for index,item in enumerate(quotation_items):
-                    quotation_item_serializer = QuotationItemsSerializer(instance = item, data=request.data["quotation_items"][index])
-                    quotation_item_serializer.is_valid(raise_exception=True)
-                    quotation_item_serializer.save()
+            # updating quotation items
+            for index,item in enumerate(quotation_items):
+                quotation_item_serializer = QuotationItemsSerializer(instance = item, data=request.data["quotation_items"][index])
+                quotation_item_serializer.is_valid(raise_exception=True)
+                quotation_item_serializer.save()
 
-                return Response(request.data, status=status.HTTP_201_CREATED)
+                return Response(request.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(str(e))
-            return Response({"response":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"response":str(e)}, status=status.HTTP_404_NOT_FOUND)
 
     @transaction.atomic
-    def destroy(self, pk=None):
+    def destroy(self, request, pk=None):
         try:
             quotation = Quotations.objects.get(id=pk)
             quotation.delete()
-            return Response({"response":"Quotation deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            return Response({"response":"Quotation deleted successfully"}, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(str(e))
-            return Response({"response":str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"response":str(e)}, status=status.HTTP_404_NOT_FOUND)
 
 
     # generate sequential quotation numbers

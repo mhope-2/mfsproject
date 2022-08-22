@@ -5,6 +5,13 @@ from rest_framework.response import Response
 from .serializers import CustomerSerializer
 from django.db import transaction
 
+from pathlib import Path
+
+ROOT_DIR = Path('__file__').resolve().parent
+logging.basicConfig(filename=f'{ROOT_DIR}/product_service/logs/product_service.log',
+                    filemode='a',
+                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 

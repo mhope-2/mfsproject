@@ -11,7 +11,6 @@ class Invoices(models.Model):
     customer_first_name = models.CharField(max_length=255)
     customer_middle_name = models.CharField(max_length=255, blank=True, null=True)
     customer_last_name = models.CharField(max_length=255, blank=True, null=True)
-    business_name = models.CharField(max_length=255, blank=True, null=True)
     net_total = models.DecimalField(decimal_places=2, max_digits=10)
     customer_phone = models.CharField(max_length=255, blank=True, null=True)
     customer_email = models.EmailField(blank=True, null=True)
@@ -37,18 +36,11 @@ class Invoices(models.Model):
 class InvoiceItems(models.Model):
     invoice_id = models.ForeignKey(Invoices, on_delete=models.CASCADE)
     invoice_no = models.CharField(max_length=255)
-    product_id = models.PositiveIntegerField() #models.ForeignKey(Products, on_delete=models.CASCADE)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    product_id = models.PositiveIntegerField() 
     quantity = models.PositiveIntegerField()
-    description = models.CharField(max_length=191, blank=True, null=True)
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     sub_total = models.DecimalField(max_digits=10,decimal_places=2)
 
-    picked = models.BooleanField(default=False)
-
-    refund_status = models.CharField(max_length=50, blank=True, null=True)
-    refund_quantity = models.PositiveIntegerField(blank=True, null=True)
-    sub_total_after_refund = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    refunded_amount = models.DecimalField(decimal_places=2, max_digits=10, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
