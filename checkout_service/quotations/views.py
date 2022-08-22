@@ -21,6 +21,8 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 class QuotationsViewSet(viewsets.GenericViewSet):
 
+    serializer_class = QuotationSerializer
+
     def list(self, request): 
         try:
             quotation = Quotations.objects.filter(deleted_at=None)

@@ -3,7 +3,6 @@ import logging
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import InvoiceItems, Invoices
-from quotations.models import Quotations
 from .serializers import InvoiceItemsSerializer, InvoiceSerializer
 from django.db import transaction
 
@@ -22,6 +21,8 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 class InvoicesViewSet(viewsets.GenericViewSet):
+
+    serializer_class = InvoiceSerializer
 
     @transaction.atomic
     def list(self, request): 

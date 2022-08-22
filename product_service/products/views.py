@@ -20,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 class ProductsViewSet(viewsets.GenericViewSet):
+
+    serializer_class = ProductsSerializer
+
     @transaction.atomic
     def list(self, request):
         try:

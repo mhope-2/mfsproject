@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 # Create your views here.
 class CustomerViewSet(viewsets.GenericViewSet):
 
+    serializer_class = CustomerSerializer
+
     # permission_classes = (permissions.IsAuthenticated,)
     def list(self, request):
         customers = Customer.objects.filter(deleted_at=None)

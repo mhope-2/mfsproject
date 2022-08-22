@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
+from rest_framework.schemas import get_schema_view
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -23,4 +26,10 @@ urlpatterns = [
     path("api/v1/product/service/", include("user.urls")),
     path("api/v1/product/service/", include("products.urls")),
     path("api/v1/product/service/", include("customers.urls")),
+
+    path('swagger-ui/', get_schema_view(
+        title="Your Project",
+        description="API for all things …",
+        version="1.0.0"
+    ), name='openapi-schema'),
 ]

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 class UserViewSet(viewsets.ViewSet):
 
-    # permission_classes = (permissions.AllowAny,)
+    serializer_class = UserSerializer
 
     def list(self, request):
         users = User.objects.filter(deleted_at=None)
