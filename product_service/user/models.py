@@ -1,17 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+
 
 class User(AbstractUser):
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=False)
     gender = models.CharField(
         max_length=140,
-        choices=(
-            ('Male', 'Male'),
-            ('Female', 'Female'),
-            ('Other', 'Other')
-        )
+        choices=(("Male", "Male"), ("Female", "Female"), ("Other", "Other")),
     )
     birth_date = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=255, null=True, blank=True)
@@ -24,7 +20,7 @@ class User(AbstractUser):
     deleted_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        ordering = ["-created_at"]    
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.id} - {self.first_name}"

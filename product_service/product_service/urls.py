@@ -17,11 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/v1/', include('rest_auth.urls')),
+    path("admin/", admin.site.urls),
+    path("api/v1/", include("rest_auth.urls")),
     # path('rest-auth-reg/', include('rest_auth.registration.urls')),
-    
-    path('api/v1/product/service/', include('user.urls')),
-    path('api/v1/product/service/', include('products.urls')),
-    path('api/v1/product/service/', include('customers.urls')),
+    path("api/v1/product/service/", include("user.urls")),
+    path("api/v1/product/service/", include("products.urls")),
+    path("api/v1/product/service/", include("customers.urls")),
 ]

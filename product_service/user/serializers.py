@@ -1,29 +1,18 @@
+import logging
 from rest_framework import serializers
 from .models import User
-# from rest_framework.exceptions import AuthenticationFailed
 
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
-import logging
-from pathlib import Path
 # Create your views here.
 
-# ROOT_DIR = Path('__file__').resolve().parent
 
-import logging
 logger = logging.getLogger(__name__)
 
-# logging.basicConfig(filename=str(ROOT_DIR)+'/logs/product_service.log',
-#                     filemode='a',
-#                     format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-#                     level=logging.DEBUG) 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = "__all__"
+
 
 #     def create(self, validated_data):
 #         # password = validated_data.pop('password')
@@ -53,7 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
 #         fields = ['email',]
 
 
-# class SetNewPasswordSerializer(serializers.Serializer):    
+# class SetNewPasswordSerializer(serializers.Serializer):
 #     password = serializers.CharField(min_length=6, max_length=68, write_only=True)
 #     token = serializers.CharField(min_length=1, write_only=True)
 #     uidb64 = serializers.CharField(min_length=1, write_only=True)

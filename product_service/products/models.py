@@ -6,10 +6,7 @@ class Products(models.Model):
     brand = models.CharField(max_length=255)
     unit = models.CharField(
         max_length=140,
-        choices=(
-            ('PCS', 'PCS'),
-            ('PCK', 'PCK')
-        ),
+        choices=(("PCS", "PCS"), ("PCK", "PCK")),
         default="PCS",
     )
 
