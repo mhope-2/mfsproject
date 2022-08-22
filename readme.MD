@@ -4,8 +4,8 @@
 
 First clone the repository from Github and switch to the project directory:
 
-    $ git clone https://github.com/mhope-2/mfsassignment
-    $ cd mfsassignment
+    $ git clone https://github.com/mhope-2/mfsproject.git
+    $ cd mfsproject
     
 Create a Vitual Environment (Linux, Mac)
 
@@ -32,7 +32,7 @@ Then simply apply the migrations:
 
     
 
-You can now run the development server:
+You can now run the development server using make:
 
     $ make run-backend
 
