@@ -4,7 +4,8 @@ from .models import Invoices, InvoiceItems
 class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoices
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['quotation_no']
 
 class InvoiceItemsSerializer(serializers.ModelSerializer):
     class Meta:

@@ -89,10 +89,12 @@ class CustomerViewSet(viewsets.GenericViewSet):
             )
 
     # function to make items sequential
+    @transaction.atomic
     def generate_customer_code(self):
         try:
-            with transaction.atomic():
-                # check for latest customer code
+            # check for latest customer code
+            if Customer.objects.all():
+
                 logger.debug(
                     "last Customer Code: {}".format(
                         str(Customer.objects.latest("created_at")).split("|")[0]
@@ -105,8 +107,15 @@ class CustomerViewSet(viewsets.GenericViewSet):
                 )
                 customer_code = "CUS" + str(latest_customer_code + 1)
                 logger.info("GENERATED CUS CODE: {}".format(customer_code))
+            else:
+                latest_customer_code = 0
+                customer_code = "CUS" + str(latest_customer_code + 1)
         except Exception as e:
-            latest_customer_code = 0
+            latest_customer_code = int(
+                    str(Customer.objects.latest("created_at"))
+                    .split("|")[0]
+                    .strip("CUS")
+                )
             customer_code = str("CUS" + str(latest_customer_code + 1))
 
         return customer_code

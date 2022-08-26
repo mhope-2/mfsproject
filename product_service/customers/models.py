@@ -19,7 +19,7 @@ class Customer(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.customer_code} - {self.get_full_name()}"
+        return f"{self.customer_code}"
 
     def get_full_name(self):
         if self.middle_name:

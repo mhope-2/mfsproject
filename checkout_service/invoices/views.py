@@ -27,10 +27,9 @@ class InvoicesViewSet(viewsets.GenericViewSet):
     @transaction.atomic
     def list(self, request): 
         try:
-            invoice = Invoices.objects.filter(deleted_at=None).order_by('-created_at')
-            paginated_queryset = self.paginate_queryset(invoice)
-            serializer = InvoiceSerializer(paginated_queryset, many=True)
-            return self.get_paginated_response(serializer.data)
+            invoices = Invoices.objects.filter(deleted_at=None)
+            serializer = InvoiceSerializer(invoices, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             logger.error(str(e))
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

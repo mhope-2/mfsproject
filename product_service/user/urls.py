@@ -40,7 +40,7 @@ urlpatterns = [
         name="delete-user",
     ),
     path(
-        "user/fetch",
+        "user/fetch/",
         UserViewSet.as_view(
             {
                 "post": "fetch",

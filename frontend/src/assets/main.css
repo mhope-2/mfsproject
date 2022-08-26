@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+:root{
+ --color-primary:#03C199;
+ --color-white:#fff;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: 'Space Grotesk',sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/*Utility*/
+.header{
+  color: var(--color-primary);
+}
+
+/*Custom Scrollbar*/
+/*Mozilla Compatible*/
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  cursor: pointer;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-lt);
+}
+
+.btn{
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn:hover{
+  background: none;
+  border-color:var(--color-primary);
+  color: var(--color-primary);
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.25rem rgba(3, 193, 152, 0.143) !important;
+}
+
+.main{
+  height: 100vh;
+}
+
+.hero{
+  background: url('./hero.png');
+  background-size: cover;
+  background-position: bottom;
+}
+
+
+/*Navbar Styling*/
+.router-link-active,
+.router-link-exact-active {
+  border-radius: 10px;
+  background: #fff;
+  color: var(--color-primary) !important;
+}
+
+.userIcon{
+  display: flex;
+  height: 30px;
+  width: 30px;
+  background-color: var(--color-primary);
+  justify-content: center;
+  align-items: center;
+  color: var(--color-white);
+  margin-top: -2px;
+}
+
+
+/*Products*/
+.card {
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.1s ease-in;
+  background-color: var(--gray-lt);
+}
+
+.card .stock {
+  color: var(--color-primary);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  background-color: var(--color-primary);
+  color: var(--color-white) !important;
+}
+
+.lowCard:hover {
+  transform: translateY(-5px);
+  background-color: #ffeeba !important;
+  color: var(--bg-dark) !important;
+}
+
+.outCard:hover {
+  transform: translateY(-5px);
+  background-color: #cd1414 !important;
+  color: var(--bg-primary) !important;
+}
+
+.card h5 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.showCart{
+  position: fixed;
+  bottom: 10%;
+  right:10%;
+  z-index: 2;
+  box-shadow: 0px 10px 20px rgba(3, 193, 152, 0.726);
+}
+
+.showCart span{
+  background-color: var(--color-white);
+  padding: 2px 10px;
+  display: block;
+  margin-bottom:10px;
+  color: var(--color-primary);
+}
+
+.showCart:hover,.showCart:focus,.showCart:active{
+  background-color: var(--color-primary);
+  color: white;
+}
+
+
+/*Cart View*/
+.cart{
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top:0;
+  left: 100%;
+  backdrop-filter: blur(20px);
+  transition: 0.2s left ease;
+}
+
+.cart .cartItem{
+  border: solid 1px var(--color-primary);
+  position: relative;
+}
+
+/*Checkout*/
+.paymentTabs input{
+    display: none;
+}
+
+.paymentTabs input:checked+label{
+  border-color:var(--color-primary);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+}
