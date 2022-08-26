@@ -48,10 +48,10 @@ Run Tests:
     $ python manage.py test
 
     $ cd checkout_service
-    $ python manage.py test 
+    $ python manage.py test (depends on product service)
 
 
 Swagger API doc:
 
     $ http://localhost:8000/swagger-ui/
-    $ http://localhost:8000/swagger-ui/
+    $ http://localhost:8001/swagger-ui/
