@@ -1,4 +1,4 @@
-## REST API for managing products and checkout Django REST Framework
+### Product and Checkout Management Service
 
 ### Brief Overview
 This project contains two django backend services (product service and checkout service) and a frontend written in Vue. The backend services are two separate django projects that interact via API calls. The product service consists of a user app, a customer app and a product app while the checkou service contains a quotation app and an invoice app; they all have CRUDL operations.
